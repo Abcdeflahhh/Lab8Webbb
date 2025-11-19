@@ -1,0 +1,9 @@
+CREATE TABLE data_barang (
+  id_barang INT(10) AUTO_INCREMENT PRIMARY KEY,
+  kategori VARCHAR(30),
+  nama VARCHAR(30),
+  gambar VARCHAR(100),
+  harga_beli DECIMAL(10,0),
+  harga_jual DECIMAL(10,0),
+  stok INT(4)
+);
