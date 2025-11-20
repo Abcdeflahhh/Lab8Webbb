@@ -99,9 +99,6 @@ if (!$conn) {
 ?>
 ```
 
-# Hasil Ouput Di Browser:
-![gambar]()
-
 ### 5. Membuat file index untuk menampilkan data (Read)
 ```
 <?php
@@ -164,9 +161,6 @@ $result = mysqli_query($conn, $sql);
 </body>
 </html>
 ```
-
-# Hasil Ouput Di Browser:
-![gambar]()
 
 ### 6. Menambah Data (Create)
 ```
@@ -235,9 +229,6 @@ if (isset($_POST['submit'])) {
 </body>
 </html>
 ```
-
-# Hasil Ouput Di Browser:
-![gambar]()
 
 ### 7. Mengubah Data (Update)
 ```
@@ -333,9 +324,6 @@ function is_select($var, $val) {
 </html>
 ```
 
-# Hasil Ouput Di Browser:
-![gambar]()
-
 ### 8. Menghapus Data (Delete)
 ```
 <?php
@@ -373,6 +361,3 @@ header('Location: index.php');
 exit;
 ?>
 ```
-
-# Hasil Ouput Di Browser:
-![gambar]()
