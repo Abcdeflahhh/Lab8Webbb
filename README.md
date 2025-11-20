@@ -52,55 +52,44 @@ lab8_php_database/
 - Start Apache dan MySQL dari XAMPP Control Panel  
 - Akses: http://localhost/phpmyadmin
 
-### 3. Membuat Database dan Tabel
-```sql
+### 3. Membuat Database, Tabel, Menambah Data
+
+### A. Membuat Database
+```
 CREATE DATABASE latihan1;
+```
 
-USE latihan1;
-
+### B. Membuat Tabel
+```
 CREATE TABLE data_barang (
-    id_barang int(10) auto_increment Primary Key,
-    kategori varchar(30),
-    nama varchar(30),
-    gambar varchar(100),
-    harga_beli decimal(10,0),
-    harga_jual decimal(10,0),
-    stok int(4)
+ id_barang int(10) auto_increment Primary Key,
+ kategori varchar(30),
+ nama varchar(30),
+ gambar varchar(100),
+ harga_beli decimal(10,0),
+ harga_jual decimal(10,0),
+ stok int(4)
 );
+```
 
-CREATE TABLE data_barang (
-    id_barang INT(10) AUTO_INCREMENT PRIMARY KEY,
-    kategori VARCHAR(30),
-    nama VARCHAR(30),
-    gambar VARCHAR(100),
-    harga_beli DECIMAL(10,0),
-    harga_jual DECIMAL(10,0),
-    stok INT(4)
-);
-
+# C. Menambah Data
+```
 INSERT INTO data_barang (kategori, nama, gambar, harga_beli, harga_jual, stok)
-VALUES 
-('Elektronik', 'HP Samsung Android', 'hp_samsung.jpg', 2000000, 2400000, 5),
+VALUES ('Elektronik', 'HP Samsung Android', 'hp_samsung.jpg', 2000000, 2400000, 5),
 ('Elektronik', 'HP Xiaomi Android', 'hp_xiaomi.jpg', 1000000, 1400000, 5),
 ('Elektronik', 'HP OPPO Android', 'hp_oppo.jpg', 1800000, 2300000, 5);
+```
 
-# Praktikum PHP - Koneksi Database MySQL
-
-File ini berisi skrip PHP untuk menghubungkan aplikasi dengan database MySQL.  
-
-## Kode Koneksi (`koneksi.php`)
-
-```php
+### 4. Membuat file koneksi database
+```
 <?php
-$host = "localhost"; // Nama host, biasanya 'localhost'
-$user = "root";      // Username MySQL
-$pass = "";          // Password MySQL
-$db   = "latihan1";  // Nama database
+$host = "localhost";
+$user = "root";
+$pass = "";
+$db   = "latihan1";
 
-// Membuat koneksi
 $conn = mysqli_connect($host, $user, $pass, $db);
 
-// Cek koneksi
 if (!$conn) {
     echo "Koneksi ke server gagal.";
     die();
@@ -108,3 +97,67 @@ if (!$conn) {
     echo "Koneksi berhasil!";
 }
 ?>
+```
+
+### 5. Membuat file index untuk menampilkan data (Read)
+```
+<?php
+include("koneksi.php");
+
+// query untuk menampilkan data
+$sql = "SELECT * FROM data_barang";
+$result = mysqli_query($conn, $sql);
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Data Barang</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="container">
+    <h1>Data Barang</h1>
+    <a href="tambah.php">+ Tambah Barang</a>
+    <br><br>
+    <table border="1" cellpadding="10" cellspacing="0">
+        <tr>
+            <th>Gambar</th>
+            <th>Nama Barang</th>
+            <th>Kategori</th>
+            <th>Harga Jual</th>
+            <th>Harga Beli</th>
+            <th>Stok</th>
+            <th>Aksi</th>
+        </tr>
+        <?php if($result && mysqli_num_rows($result) > 0): ?>
+            <?php while($row = mysqli_fetch_assoc($result)): ?>
+                <tr>
+                    <td>
+                        <?php if($row['gambar']): ?>
+                            <img src="<?= $row['gambar'];?>" width="80" alt="<?= $row['nama'];?>">
+                        <?php else: ?>
+                            -
+                        <?php endif; ?>
+                    </td>
+                    <td><?= $row['nama'];?></td>
+                    <td><?= $row['kategori'];?></td>
+                    <td><?= $row['harga_jual'];?></td>
+                    <td><?= $row['harga_beli'];?></td>
+                    <td><?= $row['stok'];?></td>
+                    <td>
+                        <a href="ubah.php?id=<?= $row['id_barang'];?>">Ubah</a> | 
+                        <a href="hapus.php?id=<?= $row['id_barang'];?>" onclick="return confirm('Yakin ingin dihapus?')">Hapus</a>
+                    </td>
+                </tr>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="7">Belum ada data</td>
+            </tr>
+        <?php endif; ?>
+    </table>
+</div>
+</body>
+</html>
+```
